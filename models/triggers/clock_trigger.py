@@ -13,7 +13,7 @@ class ClockTrigger(Trigger):
     EVERY_WEDNESDAY = 'every_wednesday'
     EVERY_THURSDAY = 'every_thursday'
     EVERY_FRIDAY = 'every_friday'
-    EVER_SATURDAY = 'every_saturday'
+    EVERY_SATURDAY = 'every_saturday'
     EVERY_SUNDAY = 'every_sunday'
     EVERY_HOUR = 'every_hour'
 
