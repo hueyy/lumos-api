@@ -49,3 +49,7 @@ class SpellRepo:
         self.database.child('spells').child(spell_id).child('actions').child(action_id).remove()
         spell = self.get_spell_by_id(spell_id)
         return spell
+
+    def execute_actions(self, spell_id):
+        spell = self.get_spell_by_id(spell_id)
+

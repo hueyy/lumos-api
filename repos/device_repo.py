@@ -43,9 +43,9 @@ class DeviceRepo:
             raise LumosException(message="Invalid position specified")
         if not self.get_device(device_id):
             raise LumosException(message="Invalid device id")
-        if not ws.closed:
+        if ws and not ws.closed:
             ws.send(json.dumps(action))
             return True
         else:
-            raise LumosException(message="Lost websocket connection", status_code=500)
+            raise LumosException(message="No websocket connection with hub", status_code=500)
 

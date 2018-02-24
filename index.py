@@ -1,4 +1,4 @@
-import os
+import logging
 import pyrebase
 from flask import Flask, jsonify
 from flask_sockets import Sockets
@@ -52,6 +52,10 @@ def handle_exception(error):
 
 
 def run_server():
+    file_handler = logging.FileHandler('lumos.log')
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.DEBUG)
+    log.addHandler(file_handler)
     if app.debug:
         application = DebuggedApplication(app)
     else:

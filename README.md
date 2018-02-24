@@ -54,7 +54,7 @@ JSON response:
 ]
 ```
 
-### GET /spell/id
+### GET /spells/id
 
 ### DELETE /<spell_id>/trigger
 
