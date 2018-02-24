@@ -9,3 +9,6 @@ FIREBASE_CONFIG = {
     "databaseURL": os.environ.get("FIREBASE_DATABASE_URL"),
     "storageBucket": os.environ.get("FIREBASE_STORAGE_BUCKET"),
 }
+
+class Globals:
+    WEBSOCKET = None

@@ -25,7 +25,7 @@ action is one of {'on', 'off', 'toggle'}
 
 ## Spells
 
-### GET /spell
+### GET /spells
 JSON response:
 ```
 [
@@ -54,7 +54,7 @@ JSON response:
 ]
 ```
 
-### GET /spell/id
+### GET /spells/id
 
 ### DELETE /<spell_id>/trigger
 
