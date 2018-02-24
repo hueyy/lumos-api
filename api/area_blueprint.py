@@ -1,5 +1,5 @@
 from copy import copy
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort
 from repos.area_repo import AreaRepo
 from models.area import Area
 
@@ -12,6 +12,14 @@ def construct_area_blueprint(database):
     @area_blueprint.route('/', methods=['GET'])
     def get_areas():
         return jsonify([area.toFullDict() for area in area_repo.get_areas()])
+
+    @area_blueprint.route('/<area_id>', methods=['GET'])
+    def get_area_by_id(area_id):
+        area = area_repo.get_area_by_id(area_id)
+        if area is None:
+            abort(404)
+        else:
+            return jsonify(area.toFullDict())
 
     @area_blueprint.route('/<area_id>', methods=['PATCH'])
     def patch_area(area_id):
