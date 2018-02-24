@@ -20,7 +20,10 @@ def construct_webhook_blueprint(database):
             raise LumosException(message="pls specify spell_id")
         spell_id = data.get('spell_id')
         result = spell_repo.execute_actions(spell_id)
-        return jsonify(result)
+        if result:
+            return jsonify({"message": "executed"})
+        else:
+            raise LumosException(message="Something went wrong when executing actions")
 
     @webhook_blueprint.route('/weather', methods=['POST'])
     def handle_weather_webhook():

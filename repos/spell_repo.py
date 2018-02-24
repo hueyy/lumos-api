@@ -1,4 +1,6 @@
 import uuid
+
+from api.lumos_exception import LumosException
 from utils.utils import dict_to_list, object_to_dict
 from models.triggers.trigger import create_trigger
 
@@ -51,4 +53,16 @@ class SpellRepo:
         return spell
 
     def execute_actions(self, spell_id):
+        from repos.device_repo import DeviceRepo
+        device_repo = DeviceRepo(self.database)
         spell = self.get_spell_by_id(spell_id)
+        if spell is None:
+            raise LumosException(message="Invalid spell_id")
+        try:
+            for action_id, action_obj in spell['actions'].items():
+                device_id = action_obj.get('device_id')
+                action = action_obj.get('action')
+                device_repo.set_device_position(device_id, action)
+            return True
+        except AttributeError:
+            raise LumosException(message="Spell has no actions")
