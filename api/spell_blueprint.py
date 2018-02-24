@@ -4,7 +4,7 @@ from api.lumos_exception import LumosException
 
 
 def construct_spell_blueprint(database):
-    spell_blueprint = Blueprint(__name__, 'spell', url_prefix='/spell')
+    spell_blueprint = Blueprint(__name__, 'spell', url_prefix='/spells')
 
     spell_repo = SpellRepo(database)
 

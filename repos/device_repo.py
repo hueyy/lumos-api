@@ -1,24 +1,51 @@
+import json
+
+from api.lumos_exception import LumosException
 from models.device import Device
+from config import Globals
 
 
 class DeviceRepo:
+    # device positions
+    ON = 'on'
+    OFF = 'off'
+    TOGGLE = 'toggle'
+
     def __init__(self, database):
         self.database = database
 
     def get_devices(self):
         devices = self.database.child('devices').get()
-        print(devices)
         devices = [
             Device(device.val()['area_id'], device.key(), device.val()['name'], device.val()['value'])
             for device in devices.each() if device.val() is not None]
         return devices
 
-    def patch_device(self, deviceID, newDevice):
-        self.database.child('devices').child(deviceID).update(newDevice.toUpdateDict())
-
-    def get_device(self, deviceID):
-        s = self.database.child('devices').child(deviceID).get().val()
+    def get_device(self, device_id):
+        s = self.database.child('devices').child(device_id).get().val()
         if s is None:
             return None
         else:
-            return Device(s['area_id'], deviceID, s['name'], s['value'])
+            return Device(s['area_id'], device_id, s['name'], s['value'])
+
+    def patch_device(self, device_id, new_device):
+        self.database.child('devices').child(device_id).update(new_device.toUpdateDict())
+        device = self.get_device(device_id)
+        return device
+
+    def set_device_position(self, device_id, position):
+        action = {
+            "device_id": device_id,
+            "position": position
+        }
+        ws = Globals.WEBSOCKET
+        if position not in [DeviceRepo.ON, DeviceRepo.OFF, DeviceRepo.TOGGLE]:
+            raise LumosException(message="Invalid position specified")
+        if not self.get_device(device_id):
+            raise LumosException(message="Invalid device id")
+        if not ws.closed:
+            ws.send(json.dumps(action))
+            return True
+        else:
+            raise LumosException(message="Lost websocket connection", status_code=500)
+
