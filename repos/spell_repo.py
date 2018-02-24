@@ -59,10 +59,12 @@ class SpellRepo:
         if spell is None:
             raise LumosException(message="Invalid spell_id")
         try:
+            print(spell['actions'])
             for action_id, action_obj in spell['actions'].items():
-                device_id = action_obj.get('device_id')
-                action = action_obj.get('action')
+                device_id = action_obj['device_id']
+                action = action_obj['action']
                 device_repo.set_device_position(device_id, action)
             return True
-        except AttributeError:
+        except AttributeError as e:
+            print (e)
             raise LumosException(message="Spell has no actions")

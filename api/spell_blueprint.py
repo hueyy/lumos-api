@@ -8,6 +8,7 @@ def construct_spell_blueprint(database):
 
     spell_repo = SpellRepo(database)
 
+
     @spell_blueprint.route('/', methods=['GET'])
     def get_spells():
         return jsonify(spell_repo.get_spells())
@@ -53,5 +54,15 @@ def construct_spell_blueprint(database):
         spell = spell_repo.remove_action(spell_id, action_id)
         return jsonify(spell)
 
+    @spell_blueprint.route('/<spell_id>/pullTrigger', methods=['POST', 'GET'])
+    def pull_trigger(spell_id):
+        print("i just got triggered by {}".format(spell_id))
+        result = spell_repo.execute_actions(spell_id)
+        if result:
+            return jsonify({"message": "executed"})
+        else:
+            raise LumosException(message="Something went wrong when executing actions")
     return spell_blueprint
+
+
 

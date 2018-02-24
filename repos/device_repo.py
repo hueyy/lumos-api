@@ -17,7 +17,13 @@ class DeviceRepo:
     def get_devices(self):
         devices = self.database.child('devices').get()
         devices = [
-            Device(device.val()['area_id'], device.key(), device.val()['name'], device.val()['value'])
+            Device(
+                area_id=device.val()['area_id'], 
+                id=device.key(), 
+                name=device.val()['name'], 
+                position=device.val()['position'],
+                mac=device.val()['mac']
+            )
             for device in devices.each() if device.val() is not None]
         return devices
 
@@ -26,7 +32,13 @@ class DeviceRepo:
         if s is None:
             return None
         else:
-            return Device(s['area_id'], device_id, s['name'], s['value'])
+            return Device(
+                area_id=s['area_id'], 
+                id=device_id, 
+                name=s['name'], 
+                position=s['position'],
+                mac=s['mac']
+            )
 
     def patch_device(self, device_id, new_device):
         self.database.child('devices').child(device_id).update(new_device.toUpdateDict())
@@ -34,15 +46,16 @@ class DeviceRepo:
         return device
 
     def set_device_position(self, device_id, position):
+        print('setting device position ', device_id, position)
         device = self.get_device(device_id)
         if not device:
             raise LumosException(message="Invalid device id")
         if position not in [DeviceRepo.ON, DeviceRepo.OFF, DeviceRepo.TOGGLE]:
             raise LumosException(message="Invalid position specified")
         if position == DeviceRepo.TOGGLE: # handle toggle
-            position = DeviceRepo.ON if device.get("position") == DeviceRepo.OFF else DeviceRepo.OFF
+            position = DeviceRepo.ON if device.position == DeviceRepo.OFF else DeviceRepo.OFF
         action = {
-            "device_mac": device.get('mac'),
+            "device_mac": device.mac,
             "position": position
         }
         ws = Globals.WEBSOCKET

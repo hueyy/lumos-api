@@ -13,6 +13,7 @@ def construct_device_blueprint(database):
 
     @device_blueprint.route('/', methods=['GET'])
     def get_devices():
+        print("yo")
         return jsonify([device.toFullDict() for device in device_repo.get_devices()])
 
     @device_blueprint.route('/<device_id>', methods=['GET'])

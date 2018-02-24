@@ -14,7 +14,6 @@ from config import FIREBASE_CONFIG
 from api.device_blueprint import construct_device_blueprint
 from api.spell_blueprint import construct_spell_blueprint
 from api.area_blueprint import construct_area_blueprint
-from api.webhook_blueprint import construct_webhook_blueprint
 from api.lumos_exception import LumosException
 
 app = Flask(__name__)
@@ -33,7 +32,6 @@ database = firebase.database()
 app.register_blueprint(construct_device_blueprint(database))
 app.register_blueprint(construct_spell_blueprint(database))
 app.register_blueprint(construct_area_blueprint(database))
-app.register_blueprint(construct_webhook_blueprint(database))
 
 sockets.register_blueprint(construct_websocket_blueprint(database))
 
@@ -47,6 +45,7 @@ def serve_lumos_web_index():
 @app.errorhandler(LumosException)
 def handle_exception(error):
     response = jsonify(error.to_dict())
+    print(response)
     response.status_code = error.status_code
     return response
 
