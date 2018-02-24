@@ -32,6 +32,6 @@ def construct_area_blueprint(database):
                 g[k] = updated_area[k]
         print("updating ", area_id, " to ", g)
         area_repo.patch_area(area_id, Area(**g))
-        return "Success"
+        return jsonify({"message":"Success"})
 
     return area_blueprint
