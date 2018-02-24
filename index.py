@@ -4,6 +4,8 @@ from flask import Flask, jsonify
 from config import FIREBASE_CONFIG
 from api.device_blueprint import construct_device_blueprint
 from api.spell_blueprint import construct_spell_blueprint
+from api.area_blueprint import construct_area_blueprint
+from api.action_blueprint import construct_action_blueprint
 from api.lumos_exception import LumosException
 
 app = Flask(__name__)
@@ -14,6 +16,8 @@ database = firebase.database()
 
 app.register_blueprint(construct_device_blueprint(database))
 app.register_blueprint(construct_spell_blueprint(database))
+app.register_blueprint(construct_area_blueprint(database))
+app.register_blueprint(construct_action_blueprint(database))
 
 
 # lumos-web
