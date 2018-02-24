@@ -20,6 +20,18 @@ def construct_device_blueprint(database):
         device = device_repo.get_device(device_id)
         return jsonify(device.toFullDict())
 
+    @device_blueprint.route('/<device_id>/action', methods=['POST'])
+    def act_on_device(device_id):
+        data = request.get_json()
+        if "position" not in data:
+            raise LumosException(message="pls specify position")
+        position = data.get('position')
+        result = device_repo.set_device_position(device_id, position)
+        if result:
+            return jsonify({"message": "success"})
+        else:
+            abort(500)
+
     @device_blueprint.route('/<device_id>', methods=['PATCH', 'POST'])
     def patch_device(device_id):
         assert(request.headers['Content-Type'] == 'application/json')
@@ -32,17 +44,5 @@ def construct_device_blueprint(database):
         print("updating ", device_id, " to ", g)
         device = device_repo.patch_device(device_id, Device(**g))
         return jsonify(device.toFullDict())
-
-    @device_blueprint.route('/<device_id>/action', methods=['POST'])
-    def act_on_device(device_id):
-        data = request.get_json()
-        if "position" not in data:
-            raise LumosException(message="pls specify position")
-        position = data.get('position')
-        result = device_repo.set_device_position(device_id, position)
-        if result:
-            return jsonify({"message": "success"})
-        else:
-            abort(500)
 
     return device_blueprint

@@ -52,4 +52,3 @@ class SpellRepo:
 
     def execute_actions(self, spell_id):
         spell = self.get_spell_by_id(spell_id)
-
