@@ -2,7 +2,8 @@
 
 ## Spells
 
-GET /spell
+### GET /spell
+JSON response:
 ```
 [
     {
@@ -30,8 +31,19 @@ GET /spell
 ]
 ```
 
-GET /spell/id
+### GET /spell/id
 
-DELETE /<spell_id>/trigger
+### DELETE /<spell_id>/trigger
 
-DELETE /<spell_id>/action/<action_id>
+### DELETE /<spell_id>/action/<action_id>
+
+### PUT /<spell_id>/trigger
+JSON request:
+```
+{
+"trigger":{
+    "type":"clock",
+    "schedule":"everyday",
+    "time":"0700"
+}
+```

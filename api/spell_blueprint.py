@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from repos.spell_repo import SpellRepo
+from api.lumos_exception import LumosException
 
 
 def construct_spell_blueprint(database):
@@ -8,12 +9,26 @@ def construct_spell_blueprint(database):
     spell_repo = SpellRepo(database)
 
     @spell_blueprint.route('/', methods=['GET'])
-    def get_devices():
+    def get_spells():
         return jsonify(spell_repo.get_spells())
 
     @spell_blueprint.route('/<spell_id>', methods=['GET'])
-    def get_device_by_id(spell_id):
+    def get_spell_by_id(spell_id):
         spell = spell_repo.get_spell_by_id(spell_id)
+        return jsonify(spell)
+
+    @spell_blueprint.route('/', methods=['POST'])
+    def create_spell():
+        spell = spell_repo.create_spell()
+        return jsonify(spell)
+
+    @spell_blueprint.route('/<spell_id>/trigger', methods=['PUT'])
+    def set_trigger(spell_id):
+        data = request.get_json()
+        if "trigger" not in data:
+            raise LumosException(message="trigger not specified")
+        trigger = data.get('trigger')
+        spell = spell_repo.set_trigger(spell_id, trigger)
         return jsonify(spell)
 
     @spell_blueprint.route('/<spell_id>/trigger', methods=['DELETE'])
@@ -26,6 +41,5 @@ def construct_spell_blueprint(database):
         spell = spell_repo.remove_action(spell_id, action_id)
         return jsonify(spell)
 
-
-
     return spell_blueprint
+

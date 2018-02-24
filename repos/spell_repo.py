@@ -1,5 +1,6 @@
 import uuid
-from utils.firebase import dict_to_list
+from utils.utils import dict_to_list, object_to_dict
+from models.triggers.trigger import create_trigger
 
 
 class SpellRepo:
@@ -14,17 +15,21 @@ class SpellRepo:
         spell = self.database.child('spells').child(spell_id).get().val()
         return spell
 
-    def create_spell(self, trigger, devices):
-        spell_id = uuid.uuid4()
+    def create_spell(self):
+        spell_id = str(uuid.uuid4())
         spell = {
-            "id": spell_id,
-            "trigger": trigger,
-            "devices": devices
+            "id": spell_id
         }
         self.database.child('spells').child(spell_id).set(spell)
         return spell
 
-    def remove_trigger(self, spell_id): # there should be a more performant way to do this
+    def set_trigger(self, spell_id, trigger):
+        trigger = object_to_dict(create_trigger(trigger))
+        self.database.child('spells').child(spell_id).child('trigger').set(trigger)
+        spell = self.get_spell_by_id(spell_id)
+        return spell
+
+    def remove_trigger(self, spell_id):  # there should be a more performant way to do this
         self.database.child('spells').child(spell_id).child('trigger').remove()
         spell = self.get_spell_by_id(spell_id)
         return spell
@@ -32,9 +37,4 @@ class SpellRepo:
     def remove_action(self, spell_id, action_id):
         self.database.child('spells').child(spell_id).child('actions').child(action_id).remove()
         spell = self.get_spell_by_id(spell_id)
-        return spell
-
-    def update_spell(self, spell):
-        spell_id = spell.get('id')
-        spell = self.database.child('spells').child(spell_id).set(spell)
         return spell
