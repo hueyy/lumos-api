@@ -31,12 +31,12 @@ class SpellRepo:
         spell = self.get_spell_by_id(spell_id)
         return spell
 
-    def set_action(self, spell_id, device_id, action):
-        action_id = str(uuid.uuid4())
+    def set_action(self, spell_id, device_id, position, action_id):
+        action_id = action_id if action_id else str(uuid.uuid4())
         action = {
             "id": action_id,
             "device_id": device_id,
-            "action": action
+            "position": position
         }
         self.database.child('spells').child(spell_id).child('actions').child(action_id).set(action)
         spell = self.get_spell_by_id(spell_id)
