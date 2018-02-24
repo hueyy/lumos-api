@@ -6,11 +6,11 @@ class AreaRepo:
         self.database = database
 
     def get_areas(self):
-        rawAreas = self.database.child('areas').get()
+        raw_areas = self.database.child('areas').get()
         areas = [
-            Area(area.key(), area.val()['name'])
-            for area in rawAreas.each() if area.val() is not None]
+            Area(area.key(), area.val()['name'], icon=area.val()['icon'])
+            for area in raw_areas.each() if area.val() is not None]
         return areas
 
-    def patch_area(self, areaID, newArea):
-        self.database.child('areas').child(areaID).update(newArea.toUpdateDict())
+    def patch_area(self, area_id, new_area):
+        self.database.child('areas').child(area_id).update(new_area.toUpdateDict())

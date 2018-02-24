@@ -1,12 +1,14 @@
 class Area:
-    def __init__(self, id=None, name=None):
+    def __init__(self, id=None, name=None, icon=None):
         self.id = id
         self.name = name
+        self.icon = icon
 
     def toFullDict(self):
         return {
             'id': self.id,
-            'name': self.name
+            'name': self.name,
+            'icon': self.icon
         }
 
     def toUpdateDict(self):

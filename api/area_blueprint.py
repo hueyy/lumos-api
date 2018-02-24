@@ -13,17 +13,17 @@ def construct_area_blueprint(database):
     def get_areas():
         return jsonify([area.toFullDict() for area in area_repo.get_areas()])
 
-    @area_blueprint.route('/<areaID>', methods=['PATCH'])
-    def patch_area(areaID):
+    @area_blueprint.route('/<area_id>', methods=['PATCH'])
+    def patch_area(area_id):
         assert(request.headers['Content-Type'] == 'application/json')
-        updatedArea = request.json
+        updated_area = request.json
         f = Area().toFullDict()
         g = copy(f)
         for k in f:
-            if k in updatedArea:
-                g[k] = updatedArea[k]
-        print("updating ", areaID, " to ", g)
-        area_repo.patch_area(areaID, Area(**g))
+            if k in updated_area:
+                g[k] = updated_area[k]
+        print("updating ", area_id, " to ", g)
+        area_repo.patch_area(area_id, Area(**g))
         return "Success"
 
     return area_blueprint
