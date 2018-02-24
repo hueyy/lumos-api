@@ -13,9 +13,8 @@ def construct_device_blueprint(database):
     def get_devices():
         return jsonify([device.toFullDict() for device in device_repo.get_devices()])
 
-    @device_blueprint.route('/<deviceID>', methods=['PATCH'])
+    @device_blueprint.route('/<deviceID>', methods=['PATCH', 'POST'])
     def patch_device(deviceID):
-        print("registered device ", deviceID)
         assert(request.headers['Content-Type'] == 'application/json')
         updatedDevice = request.json
         f = models.Device().toFullDict()

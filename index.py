@@ -3,12 +3,17 @@ import pyrebase
 from flask import Flask
 from config import FIREBASE_CONFIG
 from api.device_blueprint import construct_device_blueprint
+from api.area_blueprint import construct_area_blueprint
+from api.action_blueprint import construct_action_blueprint
 
 app = Flask(__name__)
 firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
 database = firebase.database()
 
 app.register_blueprint(construct_device_blueprint(database))
+
+app.register_blueprint(construct_area_blueprint(database))
+app.register_blueprint(construct_action_blueprint(database))
 
 
 # lumos-web
