@@ -29,6 +29,17 @@ class SpellRepo:
         spell = self.get_spell_by_id(spell_id)
         return spell
 
+    def set_action(self, spell_id, device_id, action):
+        action_id = str(uuid.uuid4())
+        action = {
+            "id": action_id,
+            "device_id": device_id,
+            "action": action
+        }
+        self.database.child('spells').child(spell_id).child('actions').child(action_id).set(action)
+        spell = self.get_spell_by_id(spell_id)
+        return spell
+
     def remove_trigger(self, spell_id):  # there should be a more performant way to do this
         self.database.child('spells').child(spell_id).child('trigger').remove()
         spell = self.get_spell_by_id(spell_id)

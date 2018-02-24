@@ -31,6 +31,18 @@ def construct_spell_blueprint(database):
         spell = spell_repo.set_trigger(spell_id, trigger)
         return jsonify(spell)
 
+    @spell_blueprint.route('/<spell_id>/action', methods=['PUT'])
+    def set_action(spell_id):
+        data = request.get_json()
+        if "action" not in data:
+            raise LumosException(message="action not specified")
+        if "device_id" not in data.get('action') or "action" not in data.get('action'):
+            raise LumosException(message="pls specify device_id & action")
+        device_id = data.get('action').get('device_id')
+        action = data.get('action').get('action')
+        spell = spell_repo.set_action(spell_id, device_id, action)
+        return jsonify(spell)
+
     @spell_blueprint.route('/<spell_id>/trigger', methods=['DELETE'])
     def delete_trigger(spell_id):
         spell = spell_repo.remove_trigger(spell_id)

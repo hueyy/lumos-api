@@ -41,9 +41,19 @@ JSON response:
 JSON request:
 ```
 {
-"trigger":{
-    "type":"clock",
-    "schedule":"everyday",
-    "time":"0700"
+    "trigger":{
+        "type":"clock",
+        "schedule":"everyday",
+        "time":"0700"
 }
+```
+
+### PUT /<spell_id>/action
+JSON request:
+```
+{
+    "action":{
+        "device_id":"434234",
+        "action":"toggle"
+    }
 ```
