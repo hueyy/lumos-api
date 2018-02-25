@@ -56,6 +56,11 @@ def construct_spell_blueprint(database):
 
     @spell_blueprint.route('/<spell_id>/pullTrigger', methods=['POST', 'GET'])
     def pull_trigger(spell_id):
+        try:
+            json_data = request.get_json()
+            print(json_data)
+        except:
+            pass
         print("i just got triggered by {}".format(spell_id))
         result = spell_repo.execute_actions(spell_id)
         if result:
