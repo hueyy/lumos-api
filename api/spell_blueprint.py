@@ -13,7 +13,8 @@ def construct_spell_blueprint(database):
         spells = spell_repo.get_spells()
         spells = list(
             filter(
-                lambda s: s.get('hide') is not True
+                lambda s: s.get('hide') is not True,
+                spells
             )
         )
         return jsonify(spell_repo.get_spells())
