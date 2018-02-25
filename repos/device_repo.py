@@ -24,8 +24,20 @@ class DeviceRepo:
                 position=device.val()['position'],
                 mac=device.val()['mac']
             )
-            for device in devices.each() if device.val() is not None]
+            for device in devices.each() if device.val() is not None
+        ]
         return devices
+
+    def get_state_from_hub(self):
+        mac_addresses = ["98:D3:31:F5:22:83", "B8:27:EB:58:90:F4"]
+        ws = Globals.WEBSOCKET
+        if ws and not ws.closed:
+            for mac in mac_addresses:
+                request = {
+                    "mac": mac,
+                    "position": "status"
+                }
+                ws.send(json.dumps(request))
 
     def get_device(self, device_id):
         s = self.database.child('devices').child(device_id).get().val()

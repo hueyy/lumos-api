@@ -10,7 +10,7 @@ def construct_websocket_blueprint(database):
         Globals.WEBSOCKET = socket
         while not socket.closed:
             message = socket.receive()
-            socket.send("received: " + message)
+            # socket.send("received: " + message)
         return
 
     return websocket_blueprint
