@@ -17,7 +17,7 @@ def construct_spell_blueprint(database):
                 spells
             )
         )
-        return jsonify(spell_repo.get_spells())
+        return jsonify(spells)
 
     @spell_blueprint.route('/<spell_id>', methods=['GET'])
     def get_spell_by_id(spell_id):
