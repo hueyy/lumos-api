@@ -62,8 +62,8 @@ class SpellRepo:
             print(spell['actions'])
             for action_id, action_obj in spell['actions'].items():
                 device_id = action_obj['device_id']
-                action = action_obj['action']
-                device_repo.set_device_position(device_id, action)
+                position = action_obj['position']
+                device_repo.set_device_position(device_id, position)
             return True
         except AttributeError as e:
             print (e)

@@ -61,6 +61,9 @@ class DeviceRepo:
         ws = Globals.WEBSOCKET
         if ws and not ws.closed:
             ws.send(json.dumps(action))
+
+            # actually should receive state from hub
+            self.database.child('devices').child(device_id).child('position').set(position)
             return True
         else:
             raise LumosException(message="No websocket connection with hub", status_code=500)
