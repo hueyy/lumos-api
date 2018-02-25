@@ -10,6 +10,12 @@ def construct_spell_blueprint(database):
 
     @spell_blueprint.route('/', methods=['GET'])
     def get_spells():
+        spells = spell_repo.get_spells()
+        spells = list(
+            filter(
+                lambda s: s.get('hide') is not True
+            )
+        )
         return jsonify(spell_repo.get_spells())
 
     @spell_blueprint.route('/<spell_id>', methods=['GET'])
@@ -58,7 +64,12 @@ def construct_spell_blueprint(database):
     def pull_trigger(spell_id):
         try:
             json_data = request.get_json()
-            print(json_data)
+            metadata = json_data.get('result').get('metadata')
+            intent_name = metadata.get('intentName')
+            if intent_name == 'Turn on Device':
+                spell_id = 'google_assistant'
+            elif intent_name == 'Turn off Device':
+                spell_id = 'google_assistant_off'
         except:
             pass
         print("i just got triggered by {}".format(spell_id))
