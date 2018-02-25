@@ -8,7 +8,6 @@ def construct_spell_blueprint(database):
 
     spell_repo = SpellRepo(database)
 
-
     @spell_blueprint.route('/', methods=['GET'])
     def get_spells():
         return jsonify(spell_repo.get_spells())
@@ -63,7 +62,5 @@ def construct_spell_blueprint(database):
             return jsonify({"message": "executed"})
         else:
             raise LumosException(message="Something went wrong when executing actions")
+
     return spell_blueprint
-
-
-
