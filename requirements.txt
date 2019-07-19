@@ -1,4 +1,4 @@
-Flask==0.12.2
+Flask==1.0
 pyrebase==3.0.27
 python-env==1.0.0
 jsonpickle==0.9.6
